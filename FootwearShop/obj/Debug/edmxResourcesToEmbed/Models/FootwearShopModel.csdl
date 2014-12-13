@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FootwearShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Activity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Motions" Relationship="Self.FK_Motion_Activity" FromRole="Activity" ToRole="Motion" />
+  </EntityType>
+  <EntityType Name="Footwear">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MakerId" Type="Int32" Nullable="false" />
+    <Property Name="TypeId" Type="Int32" Nullable="false" />
+    <Property Name="FootwearSize" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Maker" Relationship="Self.FK_Footwear_Maker" FromRole="Footwear" ToRole="Maker" />
+    <NavigationProperty Name="FootwearType" Relationship="Self.FK_Footwear_Type" FromRole="Footwear" ToRole="FootwearType" />
+    <NavigationProperty Name="Motions" Relationship="Self.FK_Motion_Footwear" FromRole="Footwear" ToRole="Motion" />
+  </EntityType>
+  <EntityType Name="FootwearType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Footwears" Relationship="Self.FK_Footwear_Type" FromRole="FootwearType" ToRole="Footwear" />
+  </EntityType>
+  <EntityType Name="Maker">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Footwears" Relationship="Self.FK_Footwear_Maker" FromRole="Maker" ToRole="Footwear" />
+  </EntityType>
+  <EntityType Name="Motion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FootwearId" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Int32" Nullable="false" />
+    <Property Name="ActionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ActivityId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Activity" Relationship="Self.FK_Motion_Activity" FromRole="Motion" ToRole="Activity" />
+    <NavigationProperty Name="Footwear" Relationship="Self.FK_Motion_Footwear" FromRole="Motion" ToRole="Footwear" />
+  </EntityType>
+  <Association Name="FK_Motion_Activity">
+    <End Role="Activity" Type="Self.Activity" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Motion" Type="Self.Motion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Activity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Motion">
+        <PropertyRef Name="ActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Footwear_Maker">
+    <End Role="Maker" Type="Self.Maker" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Footwear" Type="Self.Footwear" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Maker">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Footwear">
+        <PropertyRef Name="MakerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Footwear_Type">
+    <End Role="FootwearType" Type="Self.FootwearType" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Footwear" Type="Self.Footwear" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FootwearType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Footwear">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Motion_Footwear">
+    <End Role="Footwear" Type="Self.Footwear" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Motion" Type="Self.Motion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Footwear">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Motion">
+        <PropertyRef Name="FootwearId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FootwearShopEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Activities" EntityType="Self.Activity" />
+    <EntitySet Name="Footwears" EntityType="Self.Footwear" />
+    <EntitySet Name="FootwearTypes" EntityType="Self.FootwearType" />
+    <EntitySet Name="Makers" EntityType="Self.Maker" />
+    <EntitySet Name="Motions" EntityType="Self.Motion" />
+    <AssociationSet Name="FK_Motion_Activity" Association="Self.FK_Motion_Activity">
+      <End Role="Activity" EntitySet="Activities" />
+      <End Role="Motion" EntitySet="Motions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Footwear_Maker" Association="Self.FK_Footwear_Maker">
+      <End Role="Maker" EntitySet="Makers" />
+      <End Role="Footwear" EntitySet="Footwears" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Footwear_Type" Association="Self.FK_Footwear_Type">
+      <End Role="FootwearType" EntitySet="FootwearTypes" />
+      <End Role="Footwear" EntitySet="Footwears" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Motion_Footwear" Association="Self.FK_Motion_Footwear">
+      <End Role="Footwear" EntitySet="Footwears" />
+      <End Role="Motion" EntitySet="Motions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

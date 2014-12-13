@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="FootwearShopModelStoreContainer" CdmEntityContainer="FootwearShopEntities">
+    <EntitySetMapping Name="Activities">
+      <EntityTypeMapping TypeName="FootwearShopModel.Activity">
+        <MappingFragment StoreEntitySet="Activity">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Footwears">
+      <EntityTypeMapping TypeName="FootwearShopModel.Footwear">
+        <MappingFragment StoreEntitySet="Footwear">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="MakerId" ColumnName="MakerId" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="FootwearSize" ColumnName="FootwearSize" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FootwearTypes">
+      <EntityTypeMapping TypeName="FootwearShopModel.FootwearType">
+        <MappingFragment StoreEntitySet="FootwearType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Makers">
+      <EntityTypeMapping TypeName="FootwearShopModel.Maker">
+        <MappingFragment StoreEntitySet="Maker">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Motions">
+      <EntityTypeMapping TypeName="FootwearShopModel.Motion">
+        <MappingFragment StoreEntitySet="Motion">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FootwearId" ColumnName="FootwearId" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ActionDate" ColumnName="ActionDate" />
+          <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
