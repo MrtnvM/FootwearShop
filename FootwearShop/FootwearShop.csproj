@@ -161,8 +161,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActivitiesController.cs" />
+    <Compile Include="Controllers\FootwearsController.cs" />
+    <Compile Include="Controllers\FootwearTypesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MakersController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MotionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -279,6 +284,36 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Activities\Create.cshtml" />
+    <Content Include="Views\Activities\Delete.cshtml" />
+    <Content Include="Views\Activities\Details.cshtml" />
+    <Content Include="Views\Activities\Edit.cshtml" />
+    <Content Include="Views\Activities\Index.cshtml" />
+    <Content Include="Views\Makers\Create.cshtml" />
+    <Content Include="Views\Makers\Delete.cshtml" />
+    <Content Include="Views\Makers\Details.cshtml" />
+    <Content Include="Views\Makers\Edit.cshtml" />
+    <Content Include="Views\Makers\Index.cshtml" />
+    <Content Include="Views\FootwearTypes\Create.cshtml" />
+    <Content Include="Views\FootwearTypes\Delete.cshtml" />
+    <Content Include="Views\FootwearTypes\Details.cshtml" />
+    <Content Include="Views\FootwearTypes\Edit.cshtml" />
+    <Content Include="Views\FootwearTypes\Index.cshtml" />
+    <Content Include="Views\Footwears\Create.cshtml" />
+    <Content Include="Views\Footwears\Delete.cshtml" />
+    <Content Include="Views\Footwears\Details.cshtml" />
+    <Content Include="Views\Footwears\Edit.cshtml" />
+    <Content Include="Views\Footwears\Index.cshtml" />
+    <Content Include="Views\Motions\Create.cshtml" />
+    <Content Include="Views\Motions\Delete.cshtml" />
+    <Content Include="Views\Motions\Details.cshtml" />
+    <Content Include="Views\Motions\Edit.cshtml" />
+    <Content Include="Views\Motions\Index.cshtml" />
+    <Content Include="Views\Motions\_ViewStart.cshtml" />
+    <Content Include="Views\Makers\_ViewStart.cshtml" />
+    <Content Include="Views\FootwearTypes\_ViewStart.cshtml" />
+    <Content Include="Views\Footwears\_ViewStart.cshtml" />
+    <Content Include="Views\Activities\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
