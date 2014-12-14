@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FootwearShop.Models;
+using System.Data.SqlClient;
 
 namespace FootwearShop.Controllers
 {
@@ -16,7 +17,9 @@ namespace FootwearShop.Controllers
 
         public ActionResult Index()
         {
-            return View(db.FootwearTypes.ToList());
+            string sql = "SELECT * FROM [dbo].[FootwearType] ";
+            IEnumerable<FootwearType> types = db.Database.SqlQuery<FootwearType>(sql);
+            return View(types);
         }
 
         public ActionResult Details(int? id)
@@ -25,7 +28,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FootwearType footwearType = db.FootwearTypes.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * FROM [dbo].[FootwearType] " +
+                         "WHERE Id = @id ";
+            FootwearType footwearType = db.Database.SqlQuery<FootwearType>(sql, recordId).FirstOrDefault();
             if (footwearType == null)
             {
                 return HttpNotFound();
@@ -44,8 +50,10 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.FootwearTypes.Add(footwearType);
-                db.SaveChanges();
+                var recordName = new SqlParameter("@name", footwearType.Name);
+                string sql = "INSERT INTO [dbo].[Footweartype] (Name) " +
+                             "VALUES (@name) ";
+                db.Database.ExecuteSqlCommand(sql, recordName);
                 return RedirectToAction("Index");
             }
 
@@ -58,7 +66,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FootwearType footwearType = db.FootwearTypes.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * FROM [dbo].[FootwearType] " +
+                         "WHERE Id = @id ";
+            FootwearType footwearType = db.Database.SqlQuery<FootwearType>(sql, recordId).FirstOrDefault();
             if (footwearType == null)
             {
                 return HttpNotFound();
@@ -72,8 +83,12 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(footwearType).State = EntityState.Modified;
-                db.SaveChanges();
+                var recordId = new SqlParameter("@id", footwearType.Id);
+                var recordName = new SqlParameter("@name", footwearType.Name);
+                string sql = "UPDATE [dbo].[FootwearType] " +
+                             "SET Name = @name " +
+                             "WHERE Id = @id ";
+                db.Database.ExecuteSqlCommand(sql, recordId, recordName);
                 return RedirectToAction("Index");
             }
             return View(footwearType);
@@ -85,7 +100,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FootwearType footwearType = db.FootwearTypes.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * FROM [dbo].[FootwearType] " +
+                         "WHERE Id = @id ";
+            FootwearType footwearType = db.Database.SqlQuery<FootwearType>(sql, recordId).FirstOrDefault();
             if (footwearType == null)
             {
                 return HttpNotFound();
@@ -97,9 +115,10 @@ namespace FootwearShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            FootwearType footwearType = db.FootwearTypes.Find(id);
-            db.FootwearTypes.Remove(footwearType);
-            db.SaveChanges();
+            var recordId = new SqlParameter("@id", id);
+            string sql = "DELETE FROM [dbo].[FootwearType] " +
+                         "WHERE Id = @id ";
+            db.Database.ExecuteSqlCommand(sql, recordId);
             return RedirectToAction("Index");
         }
 

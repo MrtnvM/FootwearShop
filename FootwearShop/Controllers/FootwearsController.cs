@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FootwearShop.Models;
+using System.Data.SqlClient;
 
 namespace FootwearShop.Controllers
 {
@@ -16,6 +17,18 @@ namespace FootwearShop.Controllers
 
         public ActionResult Index()
         {
+            string sql = "SELECT " +
+                         "[Extant1].[Id] AS [Id], " +
+                         "[Extant1].[FootwearSize] AS [FootwearSize], " +
+                         "[Extant1].[Price] AS [Price], " +
+                         "[Extant2].[Id] AS [MakerId], " +
+                         "[Extant2].[Name] AS [Name], " + 
+                         "[Extant3].[Id] AS [TypeId], " +                          
+                         "[Extant3].[Name] AS [Name1] " +
+                         "FROM [dbo].[Footwear] AS [Extant1] " +
+                         "INNER JOIN [dbo].[Maker] AS [Extant2] ON [Extant1].[MakerId] = [Extant2].[Id] " +
+                         "INNER JOIN [dbo].[FootwearType] AS [Extant3] ON [Extant1].[TypeId] = [Extant3].[Id] ";            
+            IEnumerable<Footwear> footwear = db.Database.SqlQuery<Footwear>(sql);
             var footwears = db.Footwears.Include(f => f.Maker).Include(f => f.FootwearType);
             return View(footwears.ToList());
         }
@@ -26,7 +39,14 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Footwear footwear = db.Footwears.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * " +
+                         "FROM  [Footwear], [Maker], [FootwearType]" +
+                         "WHERE [Footwear].[Id] = @id AND " +
+                               "[Footwear].[TypeId] = [FootwearType].[Id] AND " +
+                               "[Footwear].[MakerId] = [Maker].[Id] ";
+            Footwear footwear = db.Database.SqlQuery<Footwear>(sql, recordId).FirstOrDefault();
+            footwear = db.Footwears.Find(id);
             if (footwear == null)
             {
                 return HttpNotFound();
@@ -47,6 +67,12 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                var recordMakerId = new SqlParameter("@makerId", footwear.MakerId);
+                var recordTypeId = new SqlParameter("@typeId", footwear.TypeId);
+                var recordFootwearSize = new SqlParameter("@footwearSize", footwear.FootwearSize);
+                var recordPrice = new SqlParameter("@price", footwear.Price);
+                string sql = "INSERT INTO [dbo].[Footwear] (MakerId, TypeId, FootwearSize, Price) " +
+                             "VALUES (@makerId, @typeId, @footwearSize, @price) ";
                 db.Footwears.Add(footwear);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -63,7 +89,14 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Footwear footwear = db.Footwears.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * " +
+                         "FROM  [Footwear], [Maker], [FootwearType]" +
+                         "WHERE [Footwear].[Id] = @id AND " +
+                               "[Footwear].[TypeId] = [FootwearType].[Id] AND " +
+                               "[Footwear].[MakerId] = [Maker].[Id] ";
+            Footwear footwear = db.Database.SqlQuery<Footwear>(sql, recordId).FirstOrDefault();
+            footwear = db.Footwears.Find(id);
             if (footwear == null)
             {
                 return HttpNotFound();
@@ -79,6 +112,17 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                var recordId = new SqlParameter("@id", footwear.Id);
+                var recordMakerId = new SqlParameter("@makerId", footwear.MakerId);
+                var recordTypeId = new SqlParameter("@typeId", footwear.TypeId);
+                var recordFootwearSize = new SqlParameter("@Size", footwear.FootwearSize);
+                var recordPrice = new SqlParameter("@price", footwear.Price);
+                string sql = "UPDATE [dbo].[Footwear] " +
+                             "SET [MakerId] = @makerId, " +
+                                 "[TypeId] = @typeId, " +
+                                 "[FootwearSize] = @size, " +
+                                 "[Price] = @price " +
+                             "WHERE [Id] = @id ";
                 db.Entry(footwear).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -94,7 +138,14 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Footwear footwear = db.Footwears.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * " +
+                         "FROM  [Footwear], [Maker], [FootwearType]" +
+                         "WHERE [Footwear].[Id] = @id AND " +
+                               "[Footwear].[TypeId] = [FootwearType].[Id] AND " +
+                               "[Footwear].[MakerId] = [Maker].[Id] ";
+            Footwear footwear = db.Database.SqlQuery<Footwear>(sql, recordId).FirstOrDefault();
+            footwear = db.Footwears.Find(id);
             if (footwear == null)
             {
                 return HttpNotFound();
@@ -106,6 +157,9 @@ namespace FootwearShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var recordId = new SqlParameter("@id", id);
+            string sql = "DELETE FROM [dbo].[Footwear] " +
+                         "WHERE [Id] = @id ";
             Footwear footwear = db.Footwears.Find(id);
             db.Footwears.Remove(footwear);
             db.SaveChanges();

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FootwearShop.Models;
+using System.Data.SqlClient;
 
 namespace FootwearShop.Controllers
 {
@@ -16,7 +17,9 @@ namespace FootwearShop.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Makers.ToList());
+            string sql = "SELECT * FROM [dbo].[Maker]";
+            IEnumerable<Maker> makers = db.Database.SqlQuery<Maker>(sql);
+            return View(makers);
         }
 
         public ActionResult Details(int? id)
@@ -25,7 +28,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Maker maker = db.Makers.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * FROM [dbo].[Maker] " +
+                         "WHERE Id = @id";
+            Maker maker = db.Database.SqlQuery<Maker>(sql, recordId).FirstOrDefault();
             if (maker == null)
             {
                 return HttpNotFound();
@@ -44,8 +50,10 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Makers.Add(maker);
-                db.SaveChanges();
+                var recordName = new SqlParameter("@name", maker.Name);
+                string sql = "INSERT INTO [dbo].[Maker] (Name) " +
+                             "VALUES (@name)";
+                db.Database.ExecuteSqlCommand(sql, recordName);
                 return RedirectToAction("Index");
             }
 
@@ -58,7 +66,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Maker maker = db.Makers.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * FROM [dbo].[Maker] " +
+                         "WHERE Id = @id";
+            Maker maker = db.Database.SqlQuery<Maker>(sql, recordId).FirstOrDefault();
             if (maker == null)
             {
                 return HttpNotFound();
@@ -72,8 +83,12 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(maker).State = EntityState.Modified;
-                db.SaveChanges();
+                var recordId = new SqlParameter("@id", maker.Id);
+                var recordName = new SqlParameter("@name", maker.Name);
+                string sql = "UPDATE [dbo].[Maker] " +
+                             "SET Name = @name " +
+                             "WHERE Id = @id ";
+                db.Database.ExecuteSqlCommand(sql, recordId, recordName);
                 return RedirectToAction("Index");
             }
             return View(maker);
@@ -85,7 +100,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Maker maker = db.Makers.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * FROM [dbo].[Maker] " +
+                         "WHERE Id = @id";
+            Maker maker = db.Database.SqlQuery<Maker>(sql, recordId).FirstOrDefault();
             if (maker == null)
             {
                 return HttpNotFound();
@@ -97,9 +115,10 @@ namespace FootwearShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Maker maker = db.Makers.Find(id);
-            db.Makers.Remove(maker);
-            db.SaveChanges();
+            var recordId = new SqlParameter("@id", id);
+            string sql = "DELETE FROM [dbo].[Maker] " +
+                         "WHERE Id = @id ";
+            db.Database.ExecuteSqlCommand(sql, recordId);
             return RedirectToAction("Index");
         }
 

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FootwearShop.Models;
+using System.Data.SqlClient;
 
 namespace FootwearShop.Controllers
 {
@@ -16,7 +17,9 @@ namespace FootwearShop.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Activities.ToList());
+            string sql = "SELECT * FROM [dbo].[Activity] ";
+            IEnumerable<Activity> activities = db.Database.SqlQuery<Activity>(sql);
+            return View(activities);
         }
 
         public ActionResult Details(int? id)
@@ -25,7 +28,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = db.Activities.Find(id);
+            string sql = "SELECT * FROM [dbo].[Activity] " +
+                         "WHERE Id = @id ";
+            var recordId = new SqlParameter("@id", id);
+            Activity activity = db.Database.SqlQuery<Activity>(sql, recordId).FirstOrDefault();
             if (activity == null)
             {
                 return HttpNotFound();
@@ -44,8 +50,10 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Activities.Add(activity);
-                db.SaveChanges();
+                var recordName = new SqlParameter("@name", activity.Name);
+                string sql = "INSERT INTO [dbo].[Activity] (Name) " +
+                             "VALUES (@name) ";
+                db.Database.ExecuteSqlCommand(sql, recordName);
                 return RedirectToAction("Index");
             }
 
@@ -58,7 +66,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = db.Activities.Find(id);
+            var recordId = new SqlParameter("@id", id);
+            string sql = "SELECT * FROM [dbo].[Activity] " +
+                         "WHERE Id = @id ";
+            Activity activity = db.Database.SqlQuery<Activity>(sql, recordId).FirstOrDefault();
             if (activity == null)
             {
                 return HttpNotFound();
@@ -72,8 +83,12 @@ namespace FootwearShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(activity).State = EntityState.Modified;
-                db.SaveChanges();
+                var recordId = new SqlParameter("@id", activity.Id);
+                var recordName = new SqlParameter("@name", activity.Name);
+                string sql = "UPDATE [dbo].[Activity] " +
+                             "SET Name = @name " +
+                             "WHERE Id = @id ";
+                db.Database.ExecuteSqlCommand(sql, recordId, recordName);
                 return RedirectToAction("Index");
             }
             return View(activity);
@@ -85,7 +100,10 @@ namespace FootwearShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = db.Activities.Find(id);
+            string sql = "SELECT * FROM [dbo].[Activity] " +
+                         "WHERE Id = @id ";
+            var recordId = new SqlParameter("@id", id);
+            Activity activity = db.Database.SqlQuery<Activity>(sql, recordId).FirstOrDefault();
             if (activity == null)
             {
                 return HttpNotFound();
@@ -97,9 +115,10 @@ namespace FootwearShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Activity activity = db.Activities.Find(id);
-            db.Activities.Remove(activity);
-            db.SaveChanges();
+            var recordId = new SqlParameter("@id", id);
+            string sql = "DELETE FROM [dbo].[Activity] " +
+                         "WHERE Id = @id ";
+            db.Database.ExecuteSqlCommand(sql, recordId);
             return RedirectToAction("Index");
         }
 
