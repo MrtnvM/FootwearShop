@@ -304,16 +304,15 @@
     <Content Include="Views\Footwears\Details.cshtml" />
     <Content Include="Views\Footwears\Edit.cshtml" />
     <Content Include="Views\Footwears\Index.cshtml" />
+    <Content Include="Views\Makers\_ViewStart.cshtml" />
+    <Content Include="Views\FootwearTypes\_ViewStart.cshtml" />
+    <Content Include="Views\Footwears\_ViewStart.cshtml" />
+    <Content Include="Views\Activities\_ViewStart.cshtml" />
     <Content Include="Views\Motions\Create.cshtml" />
     <Content Include="Views\Motions\Delete.cshtml" />
     <Content Include="Views\Motions\Details.cshtml" />
     <Content Include="Views\Motions\Edit.cshtml" />
     <Content Include="Views\Motions\Index.cshtml" />
-    <Content Include="Views\Motions\_ViewStart.cshtml" />
-    <Content Include="Views\Makers\_ViewStart.cshtml" />
-    <Content Include="Views\FootwearTypes\_ViewStart.cshtml" />
-    <Content Include="Views\Footwears\_ViewStart.cshtml" />
-    <Content Include="Views\Activities\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

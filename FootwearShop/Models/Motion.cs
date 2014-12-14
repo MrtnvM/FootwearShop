@@ -11,13 +11,22 @@ namespace FootwearShop.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Motion
     {
         public int Id { get; set; }
+        [Required]
+        [Display(Name="Обувь")]
         public int FootwearId { get; set; }
+        [Required]
+        [Display(Name="Количество")]
         public int Amount { get; set; }
+        [Required]
+        [Display(Name="Дата")]
         public System.DateTime ActionDate { get; set; }
+        [Required]
+        [Display(Name="Действие с товаром")]
         public int ActivityId { get; set; }
     
         public virtual Activity Activity { get; set; }
