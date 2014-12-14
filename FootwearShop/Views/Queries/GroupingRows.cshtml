@@ -1,0 +1,14 @@
+﻿@model IEnumerable<FootwearShop.Controllers.QueriesController.MakerCount>
+@{
+    ViewBag.Title = "Группирование строк";
+}
+
+<h2>Группирование строк</h2>
+
+<ul>
+    @foreach (var mc in Model)
+    {
+        <li>@mc.MakerName - @mc.Count</li>
+    }
+</ul>
+

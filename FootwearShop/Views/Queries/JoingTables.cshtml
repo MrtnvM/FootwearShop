@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "JoingTables";
+}
+
+<h2>Объединение таблиц</h2>
+
+<table class="tbl">
+    <thead>
+        <tr>
+            <th>Производитель</th>
+            <th>Тип обуви</th>
+            <th>Размер обуви</th>
+            <th>Цена обуви</th>
+            <th>Количество пар</th>
+            <th>Дата</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (FootwearShop.Controllers.QueriesController.Joing3Table m in ViewBag.Entities)
+        {
+            <tr>
+                <td>@m.MakerName</td>
+                <td>@m.TypeName</td>
+                <td>@m.FootwearSize</td>
+                <td>@m.Price</td>
+                <td>@m.Amount</td>
+                <td>@m.ActionDate</td>
+                <td>@m.ActivityName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

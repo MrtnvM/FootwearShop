@@ -15,6 +15,43 @@ namespace FootwearShop.Controllers
     {
         private FootwearShopEntities db = new FootwearShopEntities();
 
+        private class FootwearData
+        {
+            public int Id { get; set; }
+            public int MakerId { get; set; }
+            public string MakerName { get; set; }
+            public int TypeId { get; set; }
+            public string TypeName { get; set; }
+            public int FootwearSize { get; set; }
+            public double Price { get; set; }
+
+            public static List<Footwear> GetFootwearList(List<FootwearData> fdList)
+            {
+                List<Footwear> footwearList = new List<Footwear>(fdList.Count());
+                foreach(FootwearData fd in fdList)
+                {
+                    Footwear f = new Footwear();
+                    f.Maker = new Maker();
+                    f.FootwearType = new FootwearType();
+
+                    f.Id = fd.Id;
+                    f.MakerId = fd.MakerId;
+                    f.TypeId = fd.TypeId;
+                    f.FootwearSize = fd.FootwearSize;
+                    f.Price = fd.Price;
+
+                    f.Maker.Id = fd.MakerId;
+                    f.Maker.Name = fd.MakerName;
+
+                    f.FootwearType.Id = fd.TypeId;
+                    f.FootwearType.Name = fd.TypeName;
+
+                    footwearList.Add(f);
+                }
+                return footwearList;
+            }
+        }
+
         public ActionResult Index()
         {
             string sql = "SELECT " +
@@ -22,15 +59,15 @@ namespace FootwearShop.Controllers
                          "[Extant1].[FootwearSize] AS [FootwearSize], " +
                          "[Extant1].[Price] AS [Price], " +
                          "[Extant2].[Id] AS [MakerId], " +
-                         "[Extant2].[Name] AS [Name], " + 
+                         "[Extant2].[Name] AS [MakerName], " + 
                          "[Extant3].[Id] AS [TypeId], " +                          
-                         "[Extant3].[Name] AS [Name1] " +
+                         "[Extant3].[Name] AS [TypeName] " +
                          "FROM [dbo].[Footwear] AS [Extant1] " +
                          "INNER JOIN [dbo].[Maker] AS [Extant2] ON [Extant1].[MakerId] = [Extant2].[Id] " +
                          "INNER JOIN [dbo].[FootwearType] AS [Extant3] ON [Extant1].[TypeId] = [Extant3].[Id] ";            
-            IEnumerable<Footwear> footwear = db.Database.SqlQuery<Footwear>(sql);
-            var footwears = db.Footwears.Include(f => f.Maker).Include(f => f.FootwearType);
-            return View(footwears.ToList());
+            List<FootwearData> footwear = db.Database.SqlQuery<FootwearData>(sql).ToList();
+            var footwears = FootwearData.GetFootwearList(footwear);
+            return View(footwears);
         }
 
         public ActionResult Details(int? id)
@@ -40,13 +77,15 @@ namespace FootwearShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var recordId = new SqlParameter("@id", id);
-            string sql = "SELECT * " +
+            string sql = "SELECT [Footwear].[Id], [Footwear].[FootwearSize], [Footwear].[Price], " +
+                                "[Maker].[Id] AS [MakerId], [Maker].[Name] AS [MakerName]," +
+                                "[FootwearType].[Id] AS [TypeId], [FootwearType].[Name] AS [TypeName] " +
                          "FROM  [Footwear], [Maker], [FootwearType]" +
                          "WHERE [Footwear].[Id] = @id AND " +
                                "[Footwear].[TypeId] = [FootwearType].[Id] AND " +
                                "[Footwear].[MakerId] = [Maker].[Id] ";
-            Footwear footwear = db.Database.SqlQuery<Footwear>(sql, recordId).FirstOrDefault();
-            footwear = db.Footwears.Find(id);
+            IEnumerable<FootwearData> footwearData = db.Database.SqlQuery<FootwearData>(sql, recordId);
+            Footwear footwear = FootwearData.GetFootwearList(footwearData.ToList()).FirstOrDefault();
             if (footwear == null)
             {
                 return HttpNotFound();
@@ -90,13 +129,15 @@ namespace FootwearShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var recordId = new SqlParameter("@id", id);
-            string sql = "SELECT * " +
+            string sql = "SELECT [Footwear].[Id], [Footwear].[FootwearSize], [Footwear].[Price], " +
+                                "[Maker].[Id] AS [MakerId], [Maker].[Name] AS [MakerName]," +
+                                "[FootwearType].[Id] AS [TypeId], [FootwearType].[Name] AS [TypeName] " +
                          "FROM  [Footwear], [Maker], [FootwearType]" +
                          "WHERE [Footwear].[Id] = @id AND " +
                                "[Footwear].[TypeId] = [FootwearType].[Id] AND " +
                                "[Footwear].[MakerId] = [Maker].[Id] ";
-            Footwear footwear = db.Database.SqlQuery<Footwear>(sql, recordId).FirstOrDefault();
-            footwear = db.Footwears.Find(id);
+            IEnumerable<FootwearData> footwearData = db.Database.SqlQuery<FootwearData>(sql, recordId);
+            Footwear footwear = FootwearData.GetFootwearList(footwearData.ToList()).FirstOrDefault();
             if (footwear == null)
             {
                 return HttpNotFound();
@@ -139,13 +180,15 @@ namespace FootwearShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var recordId = new SqlParameter("@id", id);
-            string sql = "SELECT * " +
+            string sql = "SELECT [Footwear].[Id], [Footwear].[FootwearSize], [Footwear].[Price], " +
+                                "[Maker].[Id] AS [MakerId], [Maker].[Name] AS [MakerName]," +
+                                "[FootwearType].[Id] AS [TypeId], [FootwearType].[Name] AS [TypeName] " +
                          "FROM  [Footwear], [Maker], [FootwearType]" +
                          "WHERE [Footwear].[Id] = @id AND " +
                                "[Footwear].[TypeId] = [FootwearType].[Id] AND " +
                                "[Footwear].[MakerId] = [Maker].[Id] ";
-            Footwear footwear = db.Database.SqlQuery<Footwear>(sql, recordId).FirstOrDefault();
-            footwear = db.Footwears.Find(id);
+            IEnumerable<FootwearData> footwearData = db.Database.SqlQuery<FootwearData>(sql, recordId);
+            Footwear footwear = FootwearData.GetFootwearList(footwearData.ToList()).FirstOrDefault();
             if (footwear == null)
             {
                 return HttpNotFound();

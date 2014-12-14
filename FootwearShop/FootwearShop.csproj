@@ -168,6 +168,7 @@
     <Compile Include="Controllers\MakersController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MotionsController.cs" />
+    <Compile Include="Controllers\QueriesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -313,6 +314,11 @@
     <Content Include="Views\Motions\Details.cshtml" />
     <Content Include="Views\Motions\Edit.cshtml" />
     <Content Include="Views\Motions\Index.cshtml" />
+    <Content Include="Views\Queries\GroupingRows.cshtml" />
+    <Content Include="Views\Queries\_ViewStart.cshtml" />
+    <Content Include="Views\Motions\_ViewStart.cshtml" />
+    <Content Include="Views\Queries\IntegratedQuery.cshtml" />
+    <Content Include="Views\Queries\JoingTables.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -324,6 +330,7 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

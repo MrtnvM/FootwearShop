@@ -1,0 +1,28 @@
+﻿@model IEnumerable<FootwearShop.Controllers.QueriesController.IntegratedQueryClass>
+@{
+    ViewBag.Title = "Интегрированый запрос";
+}
+
+<h2>Интегрированый запрос</h2>
+
+<table class="tbl">
+    <thead>
+        <tr>
+            <td>Id обуви</td>
+            <td>Производитель</td>
+            <td>Тип обуви</td>
+            <td>Размер обуви</td>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var m in Model)
+    {
+        <tr>
+            <td>@m.FootwearId</td>
+            <td>@m.MakerName</td>
+            <td>@m.TypeName</td>
+            <td>@m.FootwearSize</td>
+        </tr>
+    }
+    </tbody>
+</table>
