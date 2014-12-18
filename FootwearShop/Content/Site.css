@@ -23,9 +23,13 @@ textarea {
     max-width: 280px;
 }
 
+.main-menu{
+    width: 500px;
+    float: left;
+}
+
 .main-menu-list{
     list-style-type: none;
-
 }
 
 .main-menu-item{   
@@ -37,6 +41,7 @@ textarea {
     padding-bottom: 11px;
     border: 1px solid #808080;
     border-radius: 3px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
 
     background: #d4eff4; /* Old browsers */
     background: -moz-linear-gradient(top,  #d4eff4 0%, #f7fbff 51%, #f9f9f9 52%, #82bef2 100%); /* FF3.6+ */

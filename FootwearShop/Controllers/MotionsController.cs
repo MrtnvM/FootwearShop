@@ -139,7 +139,6 @@ namespace FootwearShop.Controllers
                 var recordActivityId = new SqlParameter("@activityId", motion.ActivityId);
                 string sql = "INSERT INTO [Motion] (Amount, ActionDate, FootwearId, ActivityId) " +
                              "VALUES (@amount, @actionDate, @footwearId, @activityId) ";
-                //db.Database.ExecuteSqlCommand(sql, recordAmount, recordActionDate, recordFootwearId, recordActivityId);
                 db.Motions.Add(motion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -163,7 +162,7 @@ namespace FootwearShop.Controllers
                             "[Maker].[Id] AS [MakerId], [Maker].[Name] AS [MakerName], " +
                             "[FootwearType].[Id] AS [TypeId], [FootwearType].[Name] AS [TypeName], " +
                             "[Activity].[Id] AS [ActivityId], [Activity].[Name] AS [ActivityName] " +
-                         "FROM [Footwear], [FootwearType], [Maker], [Activity], [Motion] " +
+                         "FROM  [Footwear], [FootwearType], [Maker], [Activity], [Motion] " +
                          "WHERE [Motion].[ActivityId] = [Activity].[Id] AND " +
                                "[Motion].[FootwearId] = [Footwear].[Id] AND " +
                                "[Footwear].[MakerId] = [Maker].[Id] AND " +
@@ -197,7 +196,6 @@ namespace FootwearShop.Controllers
                                  "[FootwearId] = @footwearId, " +
                                  "[ActivityId] = @activityId " +
                              "WHERE [Id] = @id ";
-                //db.Database.ExecuteSqlCommand(sql, recordId, recordAmount, recordActionDate, recordFootwearId, recordActivityId);
                 db.Entry(motion).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -220,7 +218,7 @@ namespace FootwearShop.Controllers
                             "[Maker].[Id] AS [MakerId], [Maker].[Name] AS [MakerName], " +
                             "[FootwearType].[Id] AS [TypeId], [FootwearType].[Name] AS [TypeName], " +
                             "[Activity].[Id] AS [ActivityId], [Activity].[Name] AS [ActivityName] " +
-                         "FROM [Footwear], [FootwearType], [Maker], [Activity], [Motion] " +
+                         "FROM  [Footwear], [FootwearType], [Maker], [Activity], [Motion] " +
                          "WHERE [Motion].[ActivityId] = [Activity].[Id] AND " +
                                "[Motion].[FootwearId] = [Footwear].[Id] AND " +
                                "[Footwear].[MakerId] = [Maker].[Id] AND " +
@@ -242,10 +240,7 @@ namespace FootwearShop.Controllers
             var recordId = new SqlParameter("@id", id);
             string sql = "DELETE FROM [Motion] " +
                          "WHERE [Id] = @id ";
-            //db.Database.ExecuteSqlCommand(sql, recordId);
-            Motion motion = db.Motions.Find(id);
-            db.Motions.Remove(motion);
-            db.SaveChanges();
+            db.Database.ExecuteSqlCommand(sql, recordId);
             return RedirectToAction("Index");
         }
 

@@ -58,6 +58,7 @@ namespace FootwearShop.Controllers
                          "FROM [Footwear], [Maker], [FootwearType], [Motion] " +
                          "WHERE [Footwear].[TypeId] = [FootwearType].[Id] AND " +
                                "[Footwear].[MakerId] = [Maker].[Id] AND " + 
+                               "[Motion].[FootwearId] = [Footwear].[Id] AND " +
                                "[Footwear].[Id] IN " + 
                                     "(SELECT [Motion].[Id] FROM [Motion] " +
                                     "WHERE [Motion].[Id] < 5) ";

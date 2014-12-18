@@ -203,9 +203,7 @@ namespace FootwearShop.Controllers
             var recordId = new SqlParameter("@id", id);
             string sql = "DELETE FROM [dbo].[Footwear] " +
                          "WHERE [Id] = @id ";
-            Footwear footwear = db.Footwears.Find(id);
-            db.Footwears.Remove(footwear);
-            db.SaveChanges();
+            db.Database.ExecuteSqlCommand(sql, recordId);
             return RedirectToAction("Index");
         }
 
